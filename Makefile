@@ -4,10 +4,10 @@ agg:
 build:
 	pip install -r requirements.txt
 
-dock:
+dock: 
 	docker build -t aggregator-image:latest .
 	
-run:
+run: 
 	docker run -d -p 5000:5000 aggregator-image
 	open http://localhost:5000
 

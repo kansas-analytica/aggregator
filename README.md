@@ -1,6 +1,9 @@
 # aggregator
 Data aggregation tool used to gather and translate information into an RDBMS format.
 
+##### Sites to Visit
+- Tweepy (Python Module for accessing the Twitter API) - https://tweepy.readthedocs.io/en/v3.5.0/
+
 # Prerequisites
 The main prereqresite for the project is Docker. Please visit https://www.docker.com/ and install Docker on your machine before getting started.
 
