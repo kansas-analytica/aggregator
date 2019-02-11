@@ -3,6 +3,7 @@
 import os
 import tweepy
 import tools
+import json
 from flask import Flask, request, logging
 from dotenv import load_dotenv
 
@@ -37,7 +38,15 @@ def index():
 # Aggregate Tweets by User
 @app.route("/tweets/<user_id>/<int:count>", methods=['GET'])
 def aggregate_by_user(user_id, count):
+    # Trump User ID: 25073877
     LOGGER.info("Aggregating {} Tweets for user: {}".format(count, user_id))
+    statuses = twitter.user_timeline(user_id=user_id, count=count)
+    tweets = {}
+    i = 0
+    for status in statuses:
+        tweets[i] = status._json
+        i+=1
+    return(json.dumps(tweets))
 
 # END Routes
 
