@@ -1,9 +1,12 @@
 # Kansas Analytica Aggregator
 # Aggregate and process data from a variety of sources
 import os
-from flask import Flask, request, logging
 import tweepy
+import tools
+from flask import Flask, request, logging
 from dotenv import load_dotenv
+
+# global variables
 
 # load dotenv
 APP_ROOT = os.path.join(os.path.dirname(__file__), '.')
@@ -31,11 +34,20 @@ def index():
     # Returns 200 status code by deault
     return('<h1>Bot || ! </h1>')
 
+# Aggregate Tweets by User
+@app.route("/tweets/<user_id>/<int:count>", methods=['GET'])
+def aggregate_by_user(user_id, count):
+    LOGGER.info("Aggregating {} Tweets for user: {}".format(count, user_id))
+
 # END Routes
 
 # Launch
 if __name__ == '__main__':
    port = int(os.environ.get('PORT', 5000))
    LOGGER.info('Getting Flask up and running...\n')
+   key_queue = tools.generate_key_queue()
    LOGGER.info('Twitter Consumer Key: {}'.format(consumer_key))
+   LOGGER.info('Twitter Consumer Secret: {}'.format(consumer_sec))
+   LOGGER.info('Twitter Access Token: {}'.format(access_tok))
+   LOGGER.info('Twitter Access Token Secret: {}'.format(access_tok_sec))
    app.run(host = '0.0.0.0' , port = port)
