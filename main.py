@@ -124,6 +124,8 @@ def aggregate_bulk():
            # Execute query and commit to database
            KA.execute(query, values)
            db.commit()
+    return "done", 200
+
 
 # END Routes
 
