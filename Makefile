@@ -1,8 +1,8 @@
 agg:
-	python main.py
+	python3 main.py
 
 build:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 dock: 
 	docker build -t aggregator-image:latest .
