@@ -8,14 +8,9 @@ from flask import Flask, request, logging
 from dotenv import load_dotenv
 from tools import BoNTools
 
-import MySQLdb # For MySQL connection
-from datetime import datetime # For timestamp parsing
-
-<<<<<<< HEAD
 import threading
 import MySQLdb # For MySQL connection
 from datetime import datetime # For timestamp parsing
-=======
 # global variables
 tools = BoNTools()
 DEMO = False
@@ -24,13 +19,9 @@ DEMO = False
 APP_ROOT = os.path.join(os.path.dirname(__file__), '.')
 dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
->>>>>>> e4fade85870c5aa1f6aad27d221a1f28090efa24
 
 import TwitterConnection as twitter
 
-<<<<<<< HEAD
-# global variables
-=======
 # db setup
 db_host = os.getenv('DB_HOST')
 db_user = os.getenv('DB_USER')
@@ -51,7 +42,6 @@ KA = db.cursor()
 auth = tweepy.OAuthHandler(consumer_key, consumer_sec)
 auth.set_access_token(access_tok, access_tok_sec)
 twitter = tweepy.API(auth)
->>>>>>> e4fade85870c5aa1f6aad27d221a1f28090efa24
 
 app = Flask(__name__)
 app.debug = True
