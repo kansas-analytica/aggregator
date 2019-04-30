@@ -11,6 +11,11 @@ from tools import BoNTools
 import MySQLdb # For MySQL connection
 from datetime import datetime # For timestamp parsing
 
+<<<<<<< HEAD
+import threading
+import MySQLdb # For MySQL connection
+from datetime import datetime # For timestamp parsing
+=======
 # global variables
 tools = BoNTools()
 DEMO = False
@@ -19,13 +24,13 @@ DEMO = False
 APP_ROOT = os.path.join(os.path.dirname(__file__), '.')
 dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
+>>>>>>> e4fade85870c5aa1f6aad27d221a1f28090efa24
 
-# key stuff
-consumer_key   = os.getenv('TWITTER_CONSUMER_KEY')
-consumer_sec   = os.getenv('TWITTER_CONSUMER_SECRET')
-access_tok     = os.getenv('TWITTER_ACCESS_TOKEN')
-access_tok_sec = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+import TwitterConnection as twitter
 
+<<<<<<< HEAD
+# global variables
+=======
 # db setup
 db_host = os.getenv('DB_HOST')
 db_user = os.getenv('DB_USER')
@@ -46,6 +51,7 @@ KA = db.cursor()
 auth = tweepy.OAuthHandler(consumer_key, consumer_sec)
 auth.set_access_token(access_tok, access_tok_sec)
 twitter = tweepy.API(auth)
+>>>>>>> e4fade85870c5aa1f6aad27d221a1f28090efa24
 
 app = Flask(__name__)
 app.debug = True
@@ -57,16 +63,19 @@ def index():
     # Returns 200 status code by deault
     return('<h1>Bot || ! </h1>')
 
-# Aggregate Tweets by User
-@app.route("/tweets/<user_id>/<int:count>", methods=['GET'])
-def aggregate_by_user(user_id, count):
-    statuses = twitter.user_timeline(user_id=user_id, count=count)
-    tweets = {}
-    i = 0
-    for status in statuses:
-        tweets[i] = status._json
-        i+=1
-    return(json.dumps(tweets))
+# # Aggregate Tweets by User
+# @app.route("/tweets/<user_id>/<int:count>", methods=['GET'])
+# def aggregate_by_user(user_id, count):
+#     # Trump User ID: 25073877
+#     LOGGER.info("Aggregating {} Tweets for user: {}".format(count, user_id))
+#     statuses = twitter.user_timeline(user_id=user_id, count=count)
+#     tweets = {}
+#     i = 0
+#     for status in statuses:
+#         tweets[i] = status._json
+#         i+=1
+#     return(json.dumps(tweets))
+
 
 @app.route("/tweets/bulk", methods=['GET'])
 def aggregate_bulk():
@@ -134,8 +143,14 @@ if __name__ == '__main__':
    port = int(os.environ.get('PORT', 5000))
    LOGGER.info('Getting Flask up and running...\n')
    key_queue = tools.generate_key_queue()
-   LOGGER.info('Twitter Consumer Key: {}'.format(consumer_key))
-   LOGGER.info('Twitter Consumer Secret: {}'.format(consumer_sec))
-   LOGGER.info('Twitter Access Token: {}'.format(access_tok))
-   LOGGER.info('Twitter Access Token Secret: {}'.format(access_tok_sec))
-   app.run(host = '0.0.0.0', port = port)
+   # NOTE For demonstration purposes
+   #    We give a list of pre-set targets, and fire up a thread to track these
+   #    target topics with a persistent streaming connection to Twitter.
+   #    Each thread can be provided an array, and multiple threads can be started.
+   # hashtags_to_track=['#WalkAwayFromDemonrats','#WWG1WGA','#Trump2020','#KAG','#LiberalismIsAMentalDisorder']
+   hashtags_to_track=['#WalkAwayFromDemocrats','#WWG1WGA','#LiberalismIsAMentalDisorder','#KAG']
+
+   threading.Thread(target=twitter.startupStream, args=(hashtags_to_track,)).start()
+
+   # Startup the Flask server
+   app.run(host = '0.0.0.0' , port = port)
